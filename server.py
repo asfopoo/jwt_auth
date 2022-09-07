@@ -56,12 +56,15 @@ def login():
 """
 Params
 token: refresh token
+user: user_id or email 
 """
 @app.route('/refresh_expired_access_token', methods=['POST'])
 def refresh_expired_access_token():
 
     # get the params from the request
     r = json.loads(request.data)
+
+    # TODO validate this is the correct token for this user - from DB
 
     # decode the refresh jwt, throw execptions on failure
     # TODO HELP - https://pyjwt.readthedocs.io/en/latest/api.html
