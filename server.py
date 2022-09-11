@@ -3,7 +3,7 @@ import time
 import json
 import math
 from flask import Flask, request
-from jose import jwt
+import jwt
  
 # Flask constructor takes the name of
 # current module (__name__) as argument.
@@ -67,15 +67,16 @@ def refresh_expired_access_token():
     # TODO validate this is the correct token for this user - from DB
 
     # decode the refresh jwt, throw execptions on failure
-    # TODO HELP - https://pyjwt.readthedocs.io/en/latest/api.html
     try:
         jwt.decode(r["token"], refresh_secret, algorithms=['HS256'])
         print("Token is still valid and active")
     except jwt.exceptions.ExpiredSignatureError:
         # client should redirect to login
-        raise jwt.exceptions.ExpiredSignatureError("Token expired")
+        response = {"reponse": "expired token"}
+        return response, 403
     except jwt.InvalidTokenError:
-        raise jwt.InvalidTokenError("Invalid Token")
+        response = {"reponse": "invalid token"}
+        return response, 403
     except:
         raise("unknown")
 
